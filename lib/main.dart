@@ -5,15 +5,17 @@ import 'package:flutter/material.dart';
 import 'package:enhanced_course_feedback_system/constants.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
-
+  await dotenv.load(fileName: ".env");
+  String supabaseUrl = dotenv.env['SUPABASE_URL']!;
+  String supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY']!;
   await Supabase.initialize(
-    url: 'https://nzhnrpjexclcxkoyczob.supabase.co',
-    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im56aG5ycGpleGNsY3hrb3ljem9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTM3MDQwODMsImV4cCI6MjAyOTI4MDA4M30.nIpNVrDuIAcYo5ixk_G3_VmzlDplvv7VbM5Q268QsNY',
+    url: supabaseUrl,
+    anonKey: supabaseAnonKey,
   );
   runApp(ECFS());
 }

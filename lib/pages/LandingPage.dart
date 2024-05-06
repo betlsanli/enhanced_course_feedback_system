@@ -32,7 +32,7 @@ class _LandingPageState extends State<LandingPage> with AfterLayoutMixin<Landing
           .schema('ecfs')
           .from('user')
           .select()
-          .eq('user_id', userId)
+          //.eq('user_id', userId) // not necessary bc of RLS
           .limit(1);
       currentUser = Profile.fromMap(info.first);
     }
