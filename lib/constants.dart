@@ -14,7 +14,7 @@ final appTheme = ThemeData.light().copyWith(
   primaryColorDark: Colors.indigo,
   appBarTheme:  AppBarTheme(
     elevation: 0,
-    backgroundColor: Colors.indigo.shade200,
+    backgroundColor: Colors.indigo.shade300,
     iconTheme: const IconThemeData(color: Colors.black),
     titleTextStyle: const TextStyle(
       color: Colors.black,

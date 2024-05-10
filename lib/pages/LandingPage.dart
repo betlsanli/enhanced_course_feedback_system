@@ -1,8 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:enhanced_course_feedback_system/constants.dart';
 import 'package:after_layout/after_layout.dart';
 
 import '../data/Profile.dart';
+import '../data/UserUtils.dart';
+import 'package:enhanced_course_feedback_system/pages/AdminDashboard.dart';
+import 'package:enhanced_course_feedback_system/pages/TeacherDashboard.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -13,33 +18,44 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage> with AfterLayoutMixin<LandingPage> {
 
+  late Future<Profile?> futureProfile;
   late Profile currentUser;
+  late StatefulWidget userDashboard;
   bool flag = false;
 
   @override
-  void afterFirstLayout(BuildContext context){
-    fetchCurrentUser();
-  }
-
-  Future<void> fetchCurrentUser() async {
-// Get current user session
-    final currentSession = supabase.auth.currentUser;
-
-    if (currentSession != null) {
-      // Fetch data for the current user
-      final userId = currentSession.id;
-      final info = await supabase
-          .schema('ecfs')
-          .from('user')
-          .select()
-          //.eq('user_id', userId) // not necessary bc of RLS
-          .limit(1);
-      currentUser = Profile.fromMap(info.first);
+  Future<void> afterFirstLayout(BuildContext context) async {
+    futureProfile =  fetchCurrentUser();
+    currentUser = (await futureProfile)!;
+    if(currentUser.role == 'admin'){
+      userDashboard = AdminDashboard();
+    }else if(currentUser.role == 'teacher'){
+      userDashboard = TeacherDashboard();
     }
     setState(() {
       flag = true;
     });
   }
+
+//   Future<void> fetchCurrentUser() async {
+// // Get current user session
+//     final currentSession = supabase.auth.currentUser;
+//
+//     if (currentSession != null) {
+//       // Fetch data for the current user
+//       final userId = currentSession.id;
+//       final info = await supabase
+//           .schema('ecfs')
+//           .from('user')
+//           .select()
+//           //.eq('user_id', userId) // not necessary bc of RLS
+//           .limit(1);
+//       currentUser = Profile.fromMap(info.first);
+//     }
+//     setState(() {
+//       flag = true;
+//     });
+//   }
 
     Future<void> signOut() async {
       try {
@@ -56,7 +72,7 @@ class _LandingPageState extends State<LandingPage> with AfterLayoutMixin<Landing
       if(flag){
         return Scaffold(
           appBar: AppBar(
-            toolbarHeight: 50,
+            toolbarHeight: 45,
             title: Row(
               children: [
                 Text(currentUser.name),
@@ -77,6 +93,7 @@ class _LandingPageState extends State<LandingPage> with AfterLayoutMixin<Landing
               ),
             ],
           ),
+          body: userDashboard,
         );
       }else{
         return const Scaffold(
