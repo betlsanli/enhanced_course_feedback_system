@@ -1,20 +1,35 @@
-import '../data/Profile.dart';
+
 import 'package:enhanced_course_feedback_system/constants.dart';
 
-Future< List<Map<String, dynamic>>? > fetchSummariesList() async {
+import 'RequestForm.dart';
+
+Future<List<RequestForm>>fetchSummariesList() async {
 // Get current user session
-  final summaryList;
+  final requestFormList = <RequestForm>[];;
 
   if (supabase.auth.currentUser != null) {
     // Fetch data
     
-    summaryList = await supabase
+    final response = await supabase
         .schema('ecfs')
         .from('request_form')
         .select('*')
         .not('feedback_summary', 'is' ,null)
     ;
-    return summaryList;
+
+    if (response.isEmpty) {
+      return [];
+    }
+    for(final formData in response){
+      final courseData = await supabase
+          .schema('ecfs')
+          .from('course')
+          .select('name')
+          .eq('course_code', formData['course_code']);
+      String courseName = courseData.first['name'];
+      requestFormList.add(RequestForm.fromMap(formData, courseName));
+    }
+    return requestFormList;
   }
-  return null;
+  return [];
 }
