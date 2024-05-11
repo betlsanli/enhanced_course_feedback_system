@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:enhanced_course_feedback_system/data/UserUtils.dart';
 import 'package:flutter/material.dart';
 import 'package:enhanced_course_feedback_system/data/RequestFormUtils.dart';
 import 'package:after_layout/after_layout.dart';
@@ -16,26 +17,35 @@ class TeacherDashboard extends StatefulWidget {
 
 class _TeacherDashboardState extends State<TeacherDashboard> with AfterLayoutMixin<TeacherDashboard>{
 
-  late List<RequestForm> summaryList;
+  late List<RequestForm>? summaryList;
+  late List<String>? courseList;
   bool flag = false;
+  late String dropdownValue;
 
   @override
   Future<void> afterFirstLayout(BuildContext context) async {
     summaryList = await fetchSummariesList();
+    courseList = await fetchCourseList();
+    courseList?.insert(0, "ALL");
+    dropdownValue = courseList!.first;
     setState(() {
       flag = true;
     });
   }
 
   Future<void> refresh()async {
-    setState(() async {
-      summaryList = await fetchSummariesList();
+    summaryList = await fetchSummariesList();
+    courseList = await fetchCourseList();
+    courseList?.insert(0, "ALL");
+    setState((){
+      dropdownValue = courseList!.first;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     if(flag){
+      
       return Scaffold(
 
         body: RefreshIndicator(
@@ -46,11 +56,80 @@ class _TeacherDashboardState extends State<TeacherDashboard> with AfterLayoutMix
             slivers: <Widget>[
 
               SliverAppBar(
-                expandedHeight: 75.0,
+                centerTitle: true,
+                expandedHeight: 70.0,
                 backgroundColor: Colors.indigo.shade100,
-                flexibleSpace: FlexibleSpaceBar(
+                flexibleSpace: Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      DropdownButton<String>(
+                        padding: EdgeInsets.only(right: 40),
+                        value: dropdownValue,
+                        icon: const Icon(Icons.arrow_drop_down_circle_outlined),
+                        iconSize: 24,
+                        iconEnabledColor: Colors.black54,
+                        style: TextStyle(
+                          color: Colors.indigo.shade900,
+                          fontSize: 15,
+                        ),
+                        underline: Container(
+                          height: 3,
+                          color: Colors.indigo,
+                        ),
+                        onChanged: (String? value) async {
+                          summaryList = await fetchSummariesList();
+                          if(value != "ALL"){
+                            summaryList = summaryList?.where((form) => form.code == value).toList();
+                          }
+                          setState(() {
+                            dropdownValue = value!;
+                          });
+                        },
+                        items: courseList?.map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
 
+                      Text(
+                        "Sort by Date:",
+                        style: TextStyle(
+                          color: Colors.indigo.shade900,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 15,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      IconButton(
+                        iconSize: 24,
+                        color: Colors.black54,
+                        onPressed: (){
+                          setState(() {
+                            summaryList?.sort((a, b) => a.date.compareTo(b.date));
+                          });
+                        },
+                        icon: const Icon(Icons.arrow_upward_rounded),
+                      ),
+                      IconButton(
+                        iconSize: 24,
+                        color: Colors.black54,
+                        onPressed: (){
+                          setState(() {
+                            summaryList?.sort((a, b) => b.date.compareTo(a.date));
+                          });
+                        },
+                        icon: const Icon(Icons.arrow_downward_rounded),
+                      ),
+                    ],
+                  ),
                 ),
+
               ),
 
               // SliverPadding(
@@ -58,28 +137,29 @@ class _TeacherDashboardState extends State<TeacherDashboard> with AfterLayoutMix
               // ),
 
               SliverList(
-
                 delegate: SliverChildBuilderDelegate(
                       (_, int index) {
                     return Container(
                       //color: index.isOdd ? Colors.white : Colors.black12,
-                      padding: const EdgeInsets.all(8.0),
+                      padding: formPadding,
                       child: ListTile(
 
-                        title: Center(child: Text("${summaryList[index].code} - ${summaryList[index].name}")),
-                        subtitle: Center(child: Text(summaryList[index].date)),
+                        title: Center(
+                            child: Text("${summaryList?[index].code} - ${summaryList?[index].name}",)
+                        ),
+                        subtitle: Center(
+                            child: Text(summaryList![index].date)
+                        ),
                         tileColor: Colors.black12,
                         onTap: (){},
                       ),
                     );
                   },
-                  childCount: summaryList.length,
+                  childCount: summaryList?.length,
                 ),
               ),
 
             ],
-
-
           ),
         ),
       );

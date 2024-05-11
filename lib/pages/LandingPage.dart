@@ -73,18 +73,21 @@ class _LandingPageState extends State<LandingPage> with AfterLayoutMixin<Landing
         return Scaffold(
           appBar: AppBar(
             toolbarHeight: 45,
-            title: Row(
-              children: [
-                Text(currentUser.name),
-                const SizedBox(width: 10,height: 0),
-                Text(
-                  "|${currentUser.role}",
-                  style: TextStyle(
-                    color: Colors.grey.shade800,
-                    fontSize: 15,
+            title: FittedBox(
+              fit: BoxFit.fitWidth,
+              child: Row(
+                children: [
+                  Text(currentUser.name, style: TextStyle(fontSize: 24),),
+                  const SizedBox(width: 10,height: 0),
+                  Text(
+                    "| ${currentUser.role}",
+                    style: TextStyle(
+                      color: Colors.grey.shade800,
+                      fontSize: 18,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             actions: [
               IconButton(
