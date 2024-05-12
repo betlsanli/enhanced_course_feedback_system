@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 
 
 class ChatGPTConfigPage extends StatefulWidget  {
-  final List<String> settings;
-  const ChatGPTConfigPage({Key? key, required this.settings}) : super(key: key);
+  const ChatGPTConfigPage({Key? key}) : super(key: key);
 
   @override
   _ChatGPTConfigPageState createState() => _ChatGPTConfigPageState();
@@ -37,45 +36,6 @@ class _ChatGPTConfigPageState extends State<ChatGPTConfigPage>{
         mainAxisAlignment: MainAxisAlignment.center,
         //crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(
-              child: Scrollbar(
-                thickness: 7.0,
-                controller: ScrollController(),
-                child: ListView.builder(
-                  itemCount: widget.settings.length,
-                  itemBuilder: (context,index){
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 7.0),
-                      child: Container(
-                        height: 60.0,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.grey,
-                            width: 1.0,
-                          ),
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        child: ListTile(
-                          title: Text(
-                            widget.settings[index],
-                            style: TextStyle(
-                              //fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          trailing: Icon(Icons.arrow_forward, color: Colors.indigo.shade200),
-                          onTap: (){
-                            //yaz
-                          },
-                        ),
-                      ),
-                    );
-
-                  },
-                ),
-              )
-
-          ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 16.0),
             child: ElevatedButton(
@@ -86,6 +46,7 @@ class _ChatGPTConfigPageState extends State<ChatGPTConfigPage>{
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(200,60),
               ),
+
             ),
           ),
           SizedBox(height: 20.0),
