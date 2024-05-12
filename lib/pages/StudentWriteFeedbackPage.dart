@@ -36,7 +36,7 @@ class _StudentWriteFeedbackPageState extends State<StudentWriteFeedbackPage>{
               Container(
                 padding: EdgeInsets.all(16.0),
                 width: 400.0,
-                height: 150,
+                height: 180,
                 decoration: BoxDecoration(
                   color: Colors.indigo.shade50,
                   borderRadius: BorderRadius.circular(8.0),
@@ -50,6 +50,11 @@ class _StudentWriteFeedbackPageState extends State<StudentWriteFeedbackPage>{
                     Text(
                       'Course Code: ${widget.requestForm.code}',
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      'Course Name: ${widget.requestForm.name}',
+                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 10),
                     Text('Topic: ${widget.requestForm.topic}'),
