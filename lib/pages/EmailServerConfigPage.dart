@@ -3,6 +3,8 @@ import 'package:enhanced_course_feedback_system/pages/ChatGPTConfigPage.dart';
 import 'package:enhanced_course_feedback_system/pages/StudentWriteFeedbackPage.dart';
 import 'package:flutter/material.dart';
 
+import '../constants.dart';
+import '../data/RequestFormUtils.dart';
 import 'AdminDashboard.dart';
 import 'LandingPage.dart';
 import 'package:http/http.dart' as http;
@@ -22,47 +24,14 @@ class EmailServerConfigPage extends StatefulWidget {
   bool _isConfigured=false;
 
 
-  //BURAYA BAK
-
-  /*
   Future<RequestForm?> fetchRequestForm() async {
-    try {
-      final response=await http.get(
-      Uri.parse('https://nzhnrpjexclcxkoyczob.supabase.co/request_form'));
-
-      headers: {
-        ' ', //API-KEY ekle??
-
-        //public and anon
-        // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im56aG5ycGpleGNsY3hrb3ljem9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTM3MDQwODMsImV4cCI6MjAyOTI4MDA4M30.nIpNVrDuIAcYo5ixk_G3_VmzlDplvv7VbM5Q268QsNY
-      },
-
-
-
-      if (response.statusCode == 200) {
-        final jsonData=json.decode(response.body);
-        return RequestForm.fromJson(jsonData);
-
-      } else {
-        throw Exception('Failed to load request form');
-      }
-
-    } catch (e) {
-      print('Error fetching request form: $e');
-      return null;
-    }
-  }
-  */
-
-  Future<RequestForm?> fetchRequestForm() async {
-    //FOR TESTING
-    return RequestForm(
-      code: 'SENG384',
-      name: 'Project IV',
-      topic: 'testttt',
-      date: '12/05/2024',
-      summary: '',
-    );
+    final response = await supabase
+        .schema('ecfs')
+        .from('request_form')
+        .select()
+        .eq('form_id', '48955783-260f-4851-b71e-9955641578f2')
+        .limit(1);
+    return RequestForm.fromMap(response.first, await fetchCourseName(response.first['course_code']));
   }
 
 
@@ -166,15 +135,17 @@ class EmailServerConfigPage extends StatefulWidget {
                     ),
                   ),
 
+
                   ElevatedButton(
                     onPressed: (){
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ChatGPTConfigPage(settings: ['Setting 1', 'Setting 2', 'Setting 3','Setting 1', 'Setting 2', 'Setting 3','Setting 1', 'Setting 2', 'Setting 3','Setting 1', 'Setting 2', 'Setting 3'],),
+                          builder: (context) => ChatGPTConfigPage(),
                         ),
                       );
                     },
+
                     child: Text('ChatGPT API \nConfiguration'),
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(200, 60),
