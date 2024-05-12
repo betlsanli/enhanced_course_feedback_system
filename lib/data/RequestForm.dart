@@ -6,6 +6,8 @@ class RequestForm {
   final String topic;
   final String date;
   final String? summary;
+  final bool isActive;
+  final String formId;
 
   RequestForm({
     required this.code,
@@ -13,6 +15,8 @@ class RequestForm {
     required this.topic,
     required this.date,
     required this.summary,
+    required this.isActive,
+    required this.formId,
   });
 
   factory RequestForm.fromMap(Map<String, dynamic> map, String courseName) {
@@ -25,7 +29,8 @@ class RequestForm {
       topic: map['topic'],
       date: formattedDate,
       summary : map['feedback_summary'],
+      isActive: map['is_active'],
+      formId: map['form_id'],
     );
   }
 }
-
