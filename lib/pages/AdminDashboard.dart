@@ -19,6 +19,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
         title: const Text('Admin Dashboard'),
         backgroundColor: Colors.indigo.shade100,
       ),
+
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -28,7 +29,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ChatGPTConfigPage(settings: ['Setting 1', 'Setting 2', 'Setting 3','Setting 1', 'Setting 2', 'Setting 3','Setting 1', 'Setting 2', 'Setting 3','Setting 1', 'Setting 2', 'Setting 3'],),
+                        builder: (context) => ChatGPTConfigPage(),
                       ),
                   );
                 }, 
@@ -36,7 +37,6 @@ class _AdminDashboardState extends State<AdminDashboard> {
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(300, 70),
               ),
-
             ),
             const SizedBox(height: 20),
             ElevatedButton(
