@@ -24,12 +24,13 @@ class EmailServerConfigPage extends StatefulWidget {
   bool _isConfigured=false;
 
 
+  //for testing
   Future<RequestForm?> fetchRequestForm() async {
     final response = await supabase
         .schema('ecfs')
         .from('request_form')
         .select()
-        .eq('form_id', '48955783-260f-4851-b71e-9955641578f2')
+        .eq('form_id', '1500c6db-5d33-4bc6-b588-8d865e0e4527')
         .limit(1);
     return RequestForm.fromMap(response.first, await fetchCourseName(response.first['course_code']));
   }
@@ -56,46 +57,45 @@ class EmailServerConfigPage extends StatefulWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(0.0),
+
+      body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.center,
+          //crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(height: 20),
+            SizedBox(height: 40.0),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 20.0),
-              child: TextFormField(
-                //controller: _serverAddressController,
-                decoration: InputDecoration(labelText: 'Server Adress'),
-              ),
-            ),
-
-            Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 20.0),
+                padding: const EdgeInsets.symmetric(vertical: 10.0,horizontal: 16.0),
                 child: TextFormField(
-                  //controller: _portController,
-                  decoration: InputDecoration(labelText: 'Port'),
-                  keyboardType: TextInputType.number,
-                ),
-            ),
-
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: ElevatedButton(
-                  onPressed: (){
-                    _configureEmailServer();
+                  decoration: InputDecoration(
+                    labelText: 'Token',
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (val){
+                    if(val!.isEmpty || val == null){
+                      return 'Required';
+                    }
+                    return null;
                   },
-                  child: Text('Configure Email Server'),
+                )
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical:10.0),
+              child: ElevatedButton(
+                onPressed: (){
+                },
+                child: Text('Configure'),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(150, 50),
+                ),
+
               ),
             ),
             if(_isConfigured)
               Text('Email Server Configured Successfully',
-              style: TextStyle(color: Colors.green),
+                style: TextStyle(color: Colors.green),
               ),
 
-            
-            //FOR TESTING
             ElevatedButton(
               onPressed: () async{
                 RequestForm? requestForm= await fetchRequestForm();
@@ -111,19 +111,17 @@ class EmailServerConfigPage extends StatefulWidget {
               },
               child: Text('Write Feedback'),
               style: ElevatedButton.styleFrom(
-                minimumSize: Size(200, 60),
+                minimumSize: Size(110, 50),
                 backgroundColor: Colors.grey.shade100,
               ),
             ),
-            
-            
-            SizedBox(height: 300.0),
+            SizedBox(height: 20.0),
+            SizedBox(height: 430.0),
             Padding(
-              padding: const EdgeInsets.only(bottom: 10),
+              padding: const EdgeInsets.only(bottom: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  SizedBox(height: 98),
                   ElevatedButton(
                     onPressed: (){
                     },
@@ -134,7 +132,6 @@ class EmailServerConfigPage extends StatefulWidget {
 
                     ),
                   ),
-
 
                   ElevatedButton(
                     onPressed: (){
@@ -155,22 +152,22 @@ class EmailServerConfigPage extends StatefulWidget {
                 ],
               ),
             ),
-
           ],
         ),
       ),
+
     );
   }
 
+  /*
   void _configureEmailServer(){
-    //yaz
 
     setState((){
       _isConfigured=true;
     });
 
   }
-
+  */
 }
 
 
