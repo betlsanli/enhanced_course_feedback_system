@@ -8,6 +8,7 @@ import 'package:after_layout/after_layout.dart';
 import '../constants.dart';
 import '../data/RequestForm.dart';
 import 'FeedbackSummaryPage.dart';
+import 'RequestFeedbackPage.dart';
 
 class TeacherDashboard extends StatefulWidget {
   const TeacherDashboard({super.key});
@@ -49,14 +50,35 @@ class _TeacherDashboardState extends State<TeacherDashboard> with AfterLayoutMix
       
       return Scaffold(
 
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          backgroundColor: Colors.indigo.shade200,
+          focusColor: Colors.indigo.shade300,
+          onPressed: () {
+            if(courseList!.isNotEmpty || courseList != null){
+              var selectCourseList = courseList!.toList();
+              selectCourseList.remove("ALL");
+              selectCourseList.insert(0, "NONE");
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => RequestFeedbackPage(selectCourseList),
+                ),
+              );
+            }
+          },
+        ),
         body: RefreshIndicator(
           onRefresh: refresh,
           edgeOffset: 75,
 
           child: CustomScrollView(
-            slivers: <Widget>[
 
+            slivers: <Widget>[
               SliverAppBar(
+                floating: true,
+                snap: true,
                 centerTitle: true,
                 expandedHeight: 70.0,
                 backgroundColor: Colors.indigo.shade100,
@@ -127,10 +149,10 @@ class _TeacherDashboardState extends State<TeacherDashboard> with AfterLayoutMix
                         },
                         icon: const Icon(Icons.arrow_downward_rounded),
                       ),
+
                     ],
                   ),
                 ),
-
               ),
 
               // SliverPadding(

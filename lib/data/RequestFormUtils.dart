@@ -33,3 +33,19 @@ Future<List<RequestForm>>fetchSummariesList() async {
   }
   return [];
 }
+
+Future<String>fetchCourseName(String courseCode) async {
+  if (supabase.auth.currentUser != null) {
+
+    final courseData = await supabase
+        .schema('ecfs')
+        .from('course')
+        .select('name')
+        .eq('course_code', courseCode);
+    if(courseData.isEmpty){
+      return "";
+    }
+    return courseData.first['name'];
+  }
+  return "";
+}
