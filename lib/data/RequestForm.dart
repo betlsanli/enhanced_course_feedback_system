@@ -29,16 +29,3 @@ class RequestForm {
   }
 }
 
-
-//IDK IF NECESSARY
-//CHECK HERE!!
-  factory RequestForm.fromJson(Map<String, dynamic> json) {
-    return RequestForm(
-      code: json['code'],
-      name: json['name'],
-      topic: json['topic'],
-      date: json['date'],
-      summary: json['summary'],
-    );
-  }
-}
