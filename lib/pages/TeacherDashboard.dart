@@ -7,6 +7,7 @@ import 'package:after_layout/after_layout.dart';
 
 import '../constants.dart';
 import '../data/RequestForm.dart';
+import 'FeedbackSummaryPage.dart';
 
 class TeacherDashboard extends StatefulWidget {
   const TeacherDashboard({super.key});
@@ -151,7 +152,14 @@ class _TeacherDashboardState extends State<TeacherDashboard> with AfterLayoutMix
                             child: Text(summaryList![index].date)
                         ),
                         tileColor: Colors.black12,
-                        onTap: (){},
+                        onTap: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => FeedbackSummaryPage(feedbackSummary: summaryList![index]),
+                            ),
+                          );
+                        },
                       ),
                     );
                   },
