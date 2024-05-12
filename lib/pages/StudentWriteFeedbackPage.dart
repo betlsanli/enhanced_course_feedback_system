@@ -31,21 +31,17 @@ class _StudentWriteFeedbackPageState extends State<StudentWriteFeedbackPage>{
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 16),
+                SizedBox(height: 10),
                 Container(
                   padding: EdgeInsets.all(16.0),
-                  width: 400.0,
-                  height: 180,
                   decoration: BoxDecoration(
                     color: Colors.indigo.shade50,
                     borderRadius: BorderRadius.circular(8.0),
 
                   ),
-
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 10),
                       Text(
                         'Course Code: ${widget.requestForm.code}',
                         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -59,31 +55,24 @@ class _StudentWriteFeedbackPageState extends State<StudentWriteFeedbackPage>{
                       Text('Topic: ${widget.requestForm.topic}'),
                       SizedBox(height: 20),
 
-                      //Text('Teacher: ${widget.requestForm.teacherName}'),
-                      //SizedBox(height: 8),
-
                       Text('Date: ${widget.requestForm.date}'),
                     ],
                   ),
                 ),
 
-                SizedBox(height: 70),
-
-                Text(
-                  'Share your feedback:',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 16),
+                SizedBox(height: 30),
 
 
-                TextField(
+                TextFormField(
                   controller: feedbackController,
                   minLines: 5,
-                  maxLines: 10, //buna bak
+                  maxLines: 10,
                   decoration: InputDecoration(
-                    hintText: 'Enter your feedback here.',
+                    label: Text('Enter your feedback here.'),
                     border: OutlineInputBorder(),
+
                   ),
+
                 ),
 
                 SizedBox(height: 20),
@@ -91,7 +80,6 @@ class _StudentWriteFeedbackPageState extends State<StudentWriteFeedbackPage>{
                   alignment: Alignment.centerRight,
                   child: ElevatedButton(
                     onPressed: submitFeedback,
-                    //final feedbackText= feedbackController.text;
                     child: Text('Submit'),
                   ),
                 ),
@@ -131,9 +119,9 @@ class _StudentWriteFeedbackPageState extends State<StudentWriteFeedbackPage>{
       context.showErrorSnackBar(message: unexpectedErrorMessage);
     }
   }
-    void _showErrorSnackBar(String message) {
-      context.showErrorSnackBar(message: message);
-    }
+  void _showErrorSnackBar(String message) {
+    context.showErrorSnackBar(message: message);
+  }
 
 
 }
