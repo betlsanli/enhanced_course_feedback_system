@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:supabase/supabase.dart';
-
 import '../constants.dart';
 import '../data/RequestForm.dart';
 
@@ -149,8 +147,9 @@ class _StudentWriteFeedbackPageState extends State<StudentWriteFeedbackPage>{
     }
 
     final response = await supabase
+        .schema('ecfs')
         .from('feedback')
-        .upsert({'course_code': courseCode, 'feedback_text': feedbackText});
+        .insert({'course_code': courseCode, 'content': feedbackText});
 
     if (response.error == null) {
 
